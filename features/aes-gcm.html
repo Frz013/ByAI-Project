@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AES-GCM Encrypt/Decrypt</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../components.js" defer></script>
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section>
+      <h2>Encrypt/Decrypt a String</h2>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan password">
+      </div>
+      <div class="field">
+        <label for="inputString">Plaintext</label>
+        <textarea id="inputString" placeholder="Tulis teks di sini"></textarea>
+      </div>
+      <div class="actions">
+        <button id="encryptButton">Encrypt</button>
+        <button id="decryptButton">Decrypt</button>
+        <button id="copyButton">Copy Result</button>
+        <button id="downloadButton">Download (.enc)</button>
+      </div>
+
+      <div class="results-grid">
+        <div class="result-item">
+          <label for="ciphertext">Ciphertext (Base64)</label>
+          <textarea id="ciphertext" placeholder="Ciphertext akan muncul di sini"></textarea>
+        </div>
+        <div class="result-item">
+          <label for="iv">IV (Base64)</label>
+          <input id="iv" type="text" placeholder="IV akan muncul di sini">
+        </div>
+        <div class="result-item">
+          <label for="salt">Salt (Base64)</label>
+          <input id="salt" type="text" placeholder="Salt akan muncul di sini">
+        </div>
+        <div class="result-item">
+          <label for="decryptedOutput">Decrypted Output</label>
+          <textarea id="decryptedOutput" placeholder="Hasil dekripsi akan muncul di sini"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Encrypt/Decrypt a File</h2>
+      <div class="field">
+        <label for="fileInput">Pilih file teks untuk enkripsi</label>
+        <input type="file" id="fileInput" accept=".txt,.json,.md,.csv,.log,.xml,.html,.js,.css">
+      </div>
+      <div class="field">
+        <label for="encFileInput">Pilih file terenkripsi (.enc) untuk dekripsi</label>
+        <input type="file" id="encFileInput" accept=".enc,application/json">
+      </div>
+      <div class="actions">
+        <button id="uploadEncryptButton">Upload &amp; Encrypt</button>
+        <button id="uploadDecryptButton">Upload &amp; Decrypt</button>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>

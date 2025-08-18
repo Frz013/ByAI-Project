@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crypto Tools — Homepage</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="components.js" defer></script>
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Crypto Tools</h1>
+      <p>Alat kriptografi sederhana, cepat, dan aman langsung di browser Anda. Pilih fitur seperti AES‑GCM Encrypt/Decrypt dan lainnya.</p>
+      <div class="actions">
+        <a class="btn" href="features/aes-gcm.html">Mulai AES‑GCM</a>
+        <a class="btn secondary" href="#projects">Lihat Fitur</a>
+      </div>
+    </section>
+
+    <!-- Projects / Features -->
+    <section id="projects">
+      <h2>Fitur</h2>
+      <div class="features-grid">
+        <a class="card feature" href="features/aes-gcm.html" aria-label="Buka fitur AES-GCM">
+          <div class="card-title">AES‑GCM Encrypt/Decrypt</div>
+          <div class="card-desc">Enkripsi dan dekripsi teks atau file menggunakan AES‑GCM di Web Crypto API.</div>
+          <div class="card-cta">Buka →</div>
+        </a>
+
+        <a class="card feature" href="features/youtube-downloader.html" aria-label="Buka fitur YouTube Downloader">
+          <div class="card-title">YouTube Downloader</div>
+          <div class="card-desc">Unduh Video+Audio (MP4) atau hanya Audio (MP3) dari URL YouTube.</div>
+          <div class="card-cta">Buka →</div>
+        </a>
+
+        <div class="card feature disabled" aria-disabled="true" title="Segera hadir">
+          <div class="card-title">Hash / Checksum</div>
+          <div class="card-desc">Hitung hash (SHA‑256, SHA‑1, MD5) untuk teks dan file.</div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
+        <div class="card feature disabled" aria-disabled="true" title="Segera hadir">
+          <div class="card-title">JWT Tools</div>
+          <div class="card-desc">Decode/verify JWT, lihat header dan payload, dan validasi signature.</div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
+        <div class="card feature disabled" aria-disabled="true" title="Segera hadir">
+          <div class="card-title">RSA/EC Keys</div>
+          <div class="card-desc">Generate/import kunci RSA atau EC, ekspor dalam format standar.</div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
+        <div class="card feature disabled" aria-disabled="true" title="Segera hadir">
+          <div class="card-title">Base64 Tools</div>
+          <div class="card-desc">Encode/decode Base64 untuk teks dan file.</div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+
+        <div class="card feature disabled" aria-disabled="true" title="Segera hadir">
+          <div class="card-title">UUID</div>
+          <div class="card-desc">Generate UUID v4 dan lainnya untuk kebutuhan identifikasi.</div>
+          <div class="card-cta">Coming Soon</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <h2>Tentang</h2>
+      <p>Crypto Tools adalah kumpulan utilitas kriptografi yang berjalan sepenuhnya di sisi klien (browser),
+        memanfaatkan Web Crypto API agar data tidak meninggalkan perangkat Anda.</p>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Kontak</h2>
+      <p>Butuh fitur lain atau ada masukan? Silakan hubungi melalui tautan di footer.</p>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YouTube Downloader</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../components.js" defer></script>
+  <script src="./ytdl.js" defer></script>
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section>
+      <h2>YouTube Downloader</h2>
+
+      <div class="field">
+        <label for="ytUrl">URL YouTube</label>
+        <input type="text" id="ytUrl" placeholder="Tempel URL video YouTube di sini, misalnya: https://www.youtube.com/watch?v=...">
+        <div class="helper">Contoh: https://youtu.be/xxxxx</div>
+      </div>
+
+      <div class="actions">
+        <button id="fetchInfoBtn">Ambil Info</button>
+        <button id="downloadBtn" disabled>Download</button>
+      </div>
+
+      <div id="statusMsg" class="helper"></div>
+
+      <div class="results-grid" id="infoGrid" style="display:none;">
+        <div class="result-item">
+          <label>Thumbnail</label>
+          <img id="thumb" src="" alt="Thumbnail" style="max-width:100%; border-radius:12px; border:1px solid rgba(255,255,255,0.14);" />
+        </div>
+        <div class="result-item">
+          <label>Judul</label>
+          <input id="videoTitle" type="text" readonly />
+        </div>
+        <div class="result-item">
+          <label>Channel</label>
+          <input id="videoAuthor" type="text" readonly />
+        </div>
+        <div class="result-item">
+          <label>Durasi</label>
+          <input id="videoLength" type="text" readonly />
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:10px;">
+        <label>Tipe Unduhan</label>
+        <div class="actions" style="gap:8px;">
+          <button id="typeVideoBtn" class="btn" data-type="video" aria-pressed="true">Video+Audio (MP4)</button>
+          <button id="typeAudioBtn" class="btn secondary" data-type="audio" aria-pressed="false">Hanya Audio (MP3)</button>
+        </div>
+      </div>
+
+      <div class="results-grid">
+        <div class="result-item">
+          <label for="videoQuality">Kualitas Video (MP4)</label>
+          <select id="videoQuality" disabled>
+            <option value="">— pilih kualitas video —</option>
+          </select>
+        </div>
+        <div class="result-item">
+          <label for="audioQuality">Kualitas Audio (MP3)</label>
+          <select id="audioQuality" disabled>
+            <option value="">— pilih kualitas audio —</option>
+          </select>
+          <div class="helper">Jika ffmpeg belum terpasang, file akan dikirim sebagai M4A (fallback).</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>
