@@ -46,7 +46,7 @@
     return `
       <nav class="navbar">
         <div class="nav-left">
-          <a class="brand" href="${base}/index.html" aria-label="Beranda">Crypto Tools</a>
+          <a class="brand" href="${base}/index.html" aria-label="Beranda">Simple Tools</a>
           <button class="nav-toggle" aria-label="Buka menu">☰</button>
         </div>
         <ul class="nav-links">
@@ -61,6 +61,7 @@
             <option value="">Pilih fitur...</option>
             <option value="${base}/features/aes-gcm.html">AES-GCM Encrypt/Decrypt</option>
             <option value="${base}/features/youtube-downloader.html">YouTube Downloader</option>
+            <option value="${base}/features/geo-transform.html">Kalkulator Transformasi Geometri</option>
             <option value="" disabled>Hash/Checksum (Coming Soon)</option>
             <option value="" disabled>JWT Tools (Coming Soon)</option>
             <option value="" disabled>RSA/EC Keys (Coming Soon)</option>
@@ -78,7 +79,7 @@
     return `
       <div class="footer-inner">
         <div class="footer-left">
-          <strong>Crypto Tools</strong> — Memudahkan proses kriptografi sehari-hari.
+          <strong>Simple Tools</strong> — Kumpulan alat digital sederhana untuk kebutuhan sehari-hari.
         </div>
         <div class="footer-right">
           <a href="#" aria-label="GitHub">GitHub</a>
@@ -86,7 +87,7 @@
           <a href="#" aria-label="LinkedIn">LinkedIn</a>
         </div>
       </div>
-      <div class="footer-copy">© ${year} Crypto Tools. Dibuat dengan ❤️.</div>
+      <div class="footer-copy">© ${year} Simple Tools. Dibuat dengan ❤️.</div>
     `;
   }
 
@@ -131,6 +132,8 @@
         featureSelect.value = `${base}/features/aes-gcm.html`;
       } else if (/\/features\/youtube-downloader\.html$/.test(path)) {
         featureSelect.value = `${base}/features/youtube-downloader.html`;
+      } else if (/\/features\/geo-transform\.html$/.test(path)) {
+        featureSelect.value = `${base}/features/geo-transform.html`;
       }
     }
 

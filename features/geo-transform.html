@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator Transformasi Geometri</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../components.js" defer></script>
+
+  <!-- Libraries (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@11/dist/math.min.js"></script>
+
+  <!-- Feature scripts -->
+  <script src="../js/geo-math.js" defer></script>
+  <script src="../js/geo-transform.js" defer></script>
+
+  <style>
+    /* Layout khusus halaman ini, mengikuti tema global */
+    .geo-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 980px) {
+      .geo-grid {
+        grid-template-columns: 360px 1fr;
+        align-items: start;
+      }
+    }
+    .panel {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot.blue { background: #3b82f6; border: 1px solid rgba(0,0,0,0.15); }
+    .dot.red { background: #ef4444; border: 1px solid rgba(0,0,0,0.15); }
+    .helper-inline { font-size: 12px; color: var(--muted); margin-top: -4px; }
+    .group {
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .range-pair {
+      display: grid;
+      grid-template-columns: 1fr 76px;
+      gap: 8px;
+      align-items: center;
+    }
+    .actions.sticky {
+      position: sticky;
+      bottom: 0;
+      padding-top: 8px;
+      background: transparent;
+    }
+    pre#symbolicOut,
+    pre#origOut,
+    pre#transOut {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 10px;
+      max-height: 420px;
+      overflow: auto;
+    }
+    /* Polishing number inputs to match theme */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; }
+    .group .field input[type="number"] { backdrop-filter: blur(6px); }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section>
+      <h2>Kalkulator Transformasi Geometri</h2>
+      <div class="geo-grid">
+        <!-- Panel Kiri: Kontrol -->
+        <div class="panel" id="controlPanel">
+          <!-- Objek -->
+          <div class="group">
+            <div class="field">
+              <label for="objType">Jenis Objek</label>
+              <select id="objType">
+                <option value="point">Titik (banyak)</option>
+                <option value="line">Garis</option>
+                <option value="function">Fungsi (y = f(x))</option>
+              </select>
+            </div>
+
+            <!-- Titik -->
+            <div id="pointInputs">
+              <div class="field">
+                <label for="pointsInput">Daftar Titik</label>
+                <textarea id="pointsInput" placeholder="Contoh:
+(1,2); (3,-1); (0,0)
+atau satu per baris:
+(1,2)
+(3,-1)
+0,0"></textarea>
+                <div class="helper">Maksimal 200 titik. Format fleksibel: (x,y) atau x,y, dipisah titik koma atau baris baru.</div>
+              </div>
+            </div>
+
+            <!-- Garis -->
+            <div id="lineInputs" class="hidden">
+              <div class="field">
+                <label>Format Persamaan Garis</label>
+                <div class="actions" style="gap:8px;">
+                  <label><input type="radio" name="lineFormat" value="slope" checked /> y = m x + b</label>
+                  <label><input type="radio" name="lineFormat" value="standard" /> A x + B y + C = 0</label>
+                </div>
+              </div>
+              <div id="lineSlopeBox">
+                <div class="row">
+                  <div class="field">
+                    <label for="lineM">m</label>
+                    <input type="text" id="lineM" placeholder="Kemiringan (m)" />
+                  </div>
+                  <div class="field">
+                    <label for="lineB">b</label>
+                    <input type="text" id="lineB" placeholder="Intersep (b)" />
+                  </div>
+                </div>
+                <div class="helper-inline">Contoh: m=1, b=0 untuk y = x</div>
+              </div>
+              <div id="lineStdBox" class="hidden">
+                <div class="row">
+                  <div class="field">
+                    <label for="lineA">A</label>
+                    <input type="text" id="lineA" placeholder="A" />
+                  </div>
+                  <div class="field">
+                    <label for="lineBstd">B</label>
+                    <input type="text" id="lineBstd" placeholder="B" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="lineC">C</label>
+                  <input type="text" id="lineC" placeholder="C" />
+                </div>
+                <div class="helper-inline">Contoh: x = c dapat ditulis A=1, B=0, C = -c</div>
+              </div>
+            </div>
+
+            <!-- Fungsi -->
+            <div id="funcInputs" class="hidden">
+              <div class="field">
+                <label>Mode Input Fungsi</label>
+                <div class="btn-group" id="funcModeBtns">
+                  <button type="button" class="chip active" data-value="free" aria-pressed="true">Bebas (f(x))</button>
+                  <button type="button" class="chip" data-value="poly" aria-pressed="false">Polinomial</button>
+                </div>
+              </div>
+
+              <!-- Mode bebas -->
+              <div id="funcFreeBox">
+                <div class="field">
+                  <label for="funcExpr">f(x)</label>
+                  <input type="text" id="funcExpr" placeholder="Contoh: x^2 + 3x - 1, sin x, exp(x) - 1" />
+                  <div class="helper-inline">Mendukung input mudah: 3x → 3*x, sin x → sin(x), ln x → log(x), π → pi.</div>
+                </div>
+              </div>
+
+              <!-- Mode polinomial -->
+              <div id="funcPolyBox" class="hidden">
+                <div class="row">
+                  <div class="field">
+                    <label for="polyDegree">Derajat polinomial</label>
+                    <select id="polyDegree">
+                      <option value="3">3 (kubik)</option>
+                      <option value="2" selected>2 (kuadratik)</option>
+                      <option value="1">1 (linear)</option>
+                      <option value="0">0 (konstanta)</option>
+                    </select>
+                  </div>
+                  <div class="field" style="align-self: end;">
+                    <div class="helper-inline">Bentuk: y = a3 x^3 + a2 x^2 + a1 x + a0</div>
+                  </div>
+                </div>
+                <div class="row" id="polyCoeffsRow1">
+                  <div class="field" id="coefA3Box">
+                    <label for="polyA3">a3 (x^3)</label>
+                    <input type="number" id="polyA3" step="0.1" value="0" />
+                  </div>
+                  <div class="field" id="coefA2Box">
+                    <label for="polyA2">a2 (x^2)</label>
+                    <input type="number" id="polyA2" step="0.1" value="1" />
+                  </div>
+                </div>
+                <div class="row" id="polyCoeffsRow2">
+                  <div class="field" id="coefA1Box">
+                    <label for="polyA1">a1 (x)</label>
+                    <input type="number" id="polyA1" step="0.1" value="0" />
+                  </div>
+                  <div class="field" id="coefA0Box">
+                    <label for="polyA0">a0</label>
+                    <input type="number" id="polyA0" step="0.1" value="0" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="field">
+                  <label for="minX">Domain min X</label>
+                  <input type="text" id="minX" value="-10" />
+                </div>
+                <div class="field">
+                  <label for="maxX">Domain max X</label>
+                  <input type="text" id="maxX" value="10" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transformasi -->
+          <div class="group">
+            <div class="field">
+              <label>Transformasi</label>
+              <div class="btn-group" id="transTypeBtns">
+                <button type="button" class="chip active" data-value="translate" aria-pressed="true">Translasi</button>
+                <button type="button" class="chip" data-value="rotate" aria-pressed="false">Rotasi</button>
+                <button type="button" class="chip" data-value="reflect" aria-pressed="false">Refleksi</button>
+                <button type="button" class="chip" data-value="dilate" aria-pressed="false">Dilatasi</button>
+              </div>
+            </div>
+
+            <!-- Translasi -->
+            <div id="boxTranslate">
+              <div class="row">
+                <div class="field">
+                  <label for="dxNum">dx</label>
+                  <input type="number" id="dxNum" step="0.1" value="0" />
+                </div>
+                <div class="field">
+                  <label for="dyNum">dy</label>
+                  <input type="number" id="dyNum" step="0.1" value="0" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Rotasi -->
+            <div id="boxRotate" class="hidden">
+              <div class="field">
+                <label for="thetaNum">Sudut (derajat)</label>
+                <input type="number" id="thetaNum" step="1" value="0" />
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="cx">Pusat cx</label>
+                  <input type="number" id="cx" step="0.1" value="0" />
+                </div>
+                <div class="field">
+                  <label for="cy">Pusat cy</label>
+                  <input type="number" id="cy" step="0.1" value="0" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Refleksi -->
+            <div id="boxReflect" class="hidden">
+              <div class="field">
+                <label>Garis Pantul</label>
+                <div class="btn-group" id="reflectTypeBtns">
+                  <button type="button" class="chip active" data-value="x" aria-pressed="true">Sumbu-X (y=0)</button>
+                  <button type="button" class="chip" data-value="y" aria-pressed="false">Sumbu-Y (x=0)</button>
+                  <button type="button" class="chip" data-value="yx" aria-pressed="false">y = x</button>
+                  <button type="button" class="chip" data-value="ynx" aria-pressed="false">y = -x</button>
+                  <button type="button" class="chip" data-value="general" aria-pressed="false">y = m x + b</button>
+                </div>
+              </div>
+              <div id="reflectGeneralBox" class="hidden">
+                <div class="row">
+                  <div class="field">
+                    <label for="refM">m</label>
+                    <input type="number" id="refM" step="0.1" value="1" />
+                  </div>
+                  <div class="field">
+                    <label for="refB">b</label>
+                    <input type="number" id="refB" step="0.1" value="0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dilatasi -->
+            <div id="boxDilate" class="hidden">
+              <div class="field">
+                <label for="kNum">Faktor skala (k)</label>
+                <input type="number" id="kNum" step="0.1" value="1" />
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="dcx">Pusat cx</label>
+                  <input type="number" id="dcx" step="0.1" value="0" />
+                </div>
+                <div class="field">
+                  <label for="dcy">Pusat cy</label>
+                  <input type="number" id="dcy" step="0.1" value="0" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tampilan & Aksi -->
+          <div class="group">
+            <div class="row">
+              <div class="field">
+                <label><input type="checkbox" id="showOriginal" checked /> Tampilkan data asal</label>
+              </div>
+              <div class="field">
+                <label><input type="checkbox" id="showTransformed" checked /> Tampilkan bayangan</label>
+              </div>
+            </div>
+            <div class="actions sticky">
+              <button id="applyBtn">Terapkan</button>
+              <button id="undoBtn">Undo</button>
+              <button id="resetBtn">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Kanan: Hasil -->
+        <div>
+          <div class="panel">
+            <div class="field">
+              <label>Hasil Simbolik</label>
+              <pre id="symbolicOut">—</pre>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:12px;">
+            <div class="field">
+              <label>Hasil Numerik</label>
+            </div>
+            <div id="origBox" class="">
+              <h3 style="margin:6px 0 6px 0; font-size:15px; color:#bfdbfe;">Asal</h3>
+              <pre id="origOut">—</pre>
+            </div>
+            <div id="transBox" class="" style="margin-top:10px;">
+              <h3 style="margin:6px 0 6px 0; font-size:15px; color:#fecaca;">Bayangan</h3>
+              <pre id="transOut">—</pre>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:12px;">
+            <h3 style="margin:0 0 8px 0; font-size:16px; color:#bfdbfe;">Petunjuk Singkat</h3>
+            <ul style="margin:6px 0 0 18px; padding:0 0 0 4px;">
+              <li>Pilih jenis objek, masukkan datanya.</li>
+              <li>Pilih transformasi dan atur parameternya dengan input angka.</li>
+              <li>Aktifkan/nonaktifkan tampilan data asal/bayangan sesuai kebutuhan.</li>
+              <li>Gunakan Undo untuk kembali ke konfigurasi sebelumnya (1 langkah) atau Reset untuk setelan awal.</li>
+              <li>Fungsi non-translasi akan ditampilkan sebagai sampel titik.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>

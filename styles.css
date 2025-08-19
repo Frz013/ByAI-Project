@@ -53,6 +53,8 @@ h2 {
 
 input[type="text"],
 input[type="password"],
+input[type="number"],
+select,
 textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.06);
@@ -62,6 +64,9 @@ textarea {
   padding: 12px 14px;
   outline: none;
   transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 textarea {
@@ -76,6 +81,7 @@ textarea::placeholder {
 }
 
 input:focus,
+select:focus,
 textarea:focus {
   border-color: var(--primary);
   background: rgba(255, 255, 255, 0.08);
@@ -112,6 +118,38 @@ button:hover {
 button:active {
   transform: translateY(0);
   box-shadow: 0 6px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* Chip button group for Geo Transform */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.chip:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+}
+.chip.active,
+.chip[aria-pressed="true"] {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
 }
 
 /* Results grid */
@@ -475,7 +513,9 @@ section {
 }
 
 input[type="text"],
-input[type="file"] {
+input[type="number"],
+input[type="file"],
+select {
   width: 100%;
 }
 
