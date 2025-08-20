@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book List Generator</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../components.js" defer></script>
+  <script src="../js/perpustakaan.js" defer></script>
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section>
+      <h2>Book List Generator</h2>
+      <p class="muted">Kelola daftar buku perpustakaan sederhana (Tambah, Lihat, Ubah, Hapus) dan unduh data dalam format JSON atau TXT.</p>
+
+      <div class="grid-2">
+        <div>
+          <h3>Tambah Buku</h3>
+          <div class="field">
+            <label for="judul">Judul Buku</label>
+            <input type="text" id="judul" placeholder="Judul buku">
+          </div>
+          <div class="field">
+            <label for="penulis">Penulis</label>
+            <input type="text" id="penulis" placeholder="Nama penulis">
+          </div>
+          <div class="field">
+            <label for="tahun">Tahun Terbit</label>
+            <input type="number" id="tahun" placeholder="YYYY" min="0" step="1">
+          </div>
+          <div class="actions">
+            <button id="tambahBtn">Tambah Buku</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+          </div>
+          <p id="statusMsg" class="muted"></p>
+        </div>
+
+        <div>
+          <h3>Unduh Data</h3>
+          <div class="field">
+            <label for="exportFormat">Format</label>
+            <select id="exportFormat">
+              <option value="json">JSON</option>
+              <option value="txt">TXT</option>
+            </select>
+          </div>
+          <div class="actions">
+            <button id="exportBtn">Download</button>
+          </div>
+          <p class="muted">Nama file unduhan akan sesuai permintaan: book-list.json atau book-list.txt</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Daftar Buku</h3>
+      <div class="table-wrapper">
+        <table class="table" id="bookTable" aria-label="Daftar buku">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>PK</th>
+              <th>Tanggal</th>
+              <th>Penulis</th>
+              <th>Judul</th>
+              <th>Tahun</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="bookTbody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="editModalTitle">
+    <div class="modal-overlay" data-close="true"></div>
+    <div class="modal-content">
+      <h3 id="editModalTitle">Edit Data Buku</h3>
+      <form id="editForm">
+        <div class="field">
+          <label for="editPk">PK</label>
+          <input type="text" id="editPk" readonly>
+        </div>
+        <div class="field">
+          <label for="editTanggal">Tanggal</label>
+          <input type="text" id="editTanggal" readonly>
+        </div>
+        <div class="field">
+          <label for="editPenulis">Penulis</label>
+          <input type="text" id="editPenulis" placeholder="Nama penulis">
+        </div>
+        <div class="field">
+          <label for="editJudul">Judul</label>
+          <input type="text" id="editJudul" placeholder="Judul buku">
+        </div>
+        <div class="field">
+          <label for="editTahun">Tahun (YYYY)</label>
+          <input type="number" id="editTahun" placeholder="YYYY" min="0" step="1">
+        </div>
+        <div class="actions">
+          <button type="button" id="editSaveBtn">Simpan</button>
+          <button type="button" id="editCancelBtn" class="secondary">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>
