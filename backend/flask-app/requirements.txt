@@ -2,3 +2,5 @@ Flask>=2.3.0,<4
 Flask-Cors>=4.0.0,<5
 pytube>=15.0.0,<16
 yt-dlp>=2024.4.9
+ujson>=5.9.0
+kbbi>=0.4.3

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>KBBI Checker — Simple Tools</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .kbbi-card {
+      background: var(--card-bg, #1e1e1e);
+      border: 1px solid var(--border, #333);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 12px;
+    }
+    .kbbi-input-row {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+    .kbbi-input-row input[type="text"] {
+      flex: 1 1 280px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border, #444);
+      background: var(--input-bg, #111);
+      color: var(--text, #eee);
+      outline: none;
+    }
+    .kbbi-input-row button {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border, #444);
+      background: var(--btn-bg, #0a84ff);
+      color: #fff;
+      cursor: pointer;
+    }
+    .kbbi-status {
+      font-size: 0.95rem;
+      margin: 6px 0;
+      color: var(--muted, #aaa);
+    }
+    .kbbi-result h3 {
+      margin: 10px 0 6px;
+      font-size: 1.1rem;
+    }
+    .kbbi-result ul {
+      margin: 6px 0 0 18px;
+    }
+    .kbbi-error {
+      color: #ff6b6b;
+      margin-top: 8px;
+    }
+    .kbbi-ok {
+      color: #4cd964;
+    }
+  </style>
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="container">
+    <h1>KBBI Checker</h1>
+    <p>Masukkan sebuah kata untuk memeriksa validitas di KBBI (daring melalui library kbbi dengan cache). Hasil mencakup makna/definisi, kelas kata, contoh, serta saran ejaan bila tidak ditemukan.</p>
+
+    <div class="kbbi-card">
+      <form id="kbbiForm" autocomplete="off" aria-label="Form cek kata KBBI">
+        <label for="kataInput">Kata:</label>
+        <div class="kbbi-input-row">
+          <input id="kataInput" type="text" placeholder="contoh: pijar" enterkeyhint="search" />
+          <button id="cekBtn" type="submit">Cek</button>
+        </div>
+      </form>
+      <div id="status" class="kbbi-status" role="status" aria-live="polite"></div>
+      <div id="hasil" class="kbbi-result" aria-live="polite"></div>
+      <div id="err" class="kbbi-error" role="alert"></div>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+
+  <script src="../components.js"></script>
+  <script src="../js/kbbi-checker.js"></script>
+</body>
+</html>

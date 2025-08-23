@@ -63,6 +63,7 @@
             <option value="${base}/features/youtube-downloader.html">YouTube Downloader</option>
             <option value="${base}/features/geo-transform.html">Kalkulator Transformasi Geometri</option>
             <option value="${base}/features/perpustakaan.html">Book List Generator</option>
+            <option value="${base}/features/kbbi-checker.html">KBBI Checker</option>
             <option value="" disabled>Hash/Checksum (Coming Soon)</option>
             <option value="" disabled>JWT Tools (Coming Soon)</option>
             <option value="" disabled>RSA/EC Keys (Coming Soon)</option>
@@ -137,6 +138,8 @@
         featureSelect.value = `${base}/features/geo-transform.html`;
       } else if (/\/features\/perpustakaan\.html$/.test(path)) {
         featureSelect.value = `${base}/features/perpustakaan.html`;
+      } else if (/\/features\/kbbi-checker\.html$/.test(path)) {
+        featureSelect.value = `${base}/features/kbbi-checker.html`;
       }
     }
 
