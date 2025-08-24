@@ -81,7 +81,7 @@
     return `
       <div class="footer-inner">
         <div class="footer-left">
-          <strong>Simple Tools</strong> — Kumpulan alat digital sederhana untuk kebutuhan sehari-hari.
+          <strong>Simple Tools</strong> - gatau mau namain apaan.
         </div>
         <div class="footer-right">
           <a href="#" aria-label="GitHub">GitHub</a>
