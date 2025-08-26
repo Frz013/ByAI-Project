@@ -46,8 +46,8 @@
     return `
       <nav class="navbar">
         <div class="nav-left">
-          <a class="brand" href="${base}/index.html" aria-label="Beranda">Simple Tools</a>
-          <button class="nav-toggle" aria-label="Buka menu">☰</button>
+          <a class="brand" href="${base}/index.html" aria-label="Beranda">SerbaKit <span class="brand-tagline"></span></a>
+          <button class="nav-toggle" aria-label="Buka menu" aria-expanded="false">☰</button>
         </div>
         <ul class="nav-links">
           <li><a href="${base}/index.html">Home</a></li>
@@ -58,7 +58,7 @@
         <div class="nav-actions">
           <label class="feature-select-label" for="featureSelect">Fitur:</label>
           <select id="featureSelect" class="feature-select" aria-label="Pilih fitur">
-            <option value="">Pilih fitur...</option>
+            <option value="__none__" disabled selected>-- Pilih fitur --</option>
             <option value="${base}/features/aes-gcm.html">AES-GCM Encrypt/Decrypt</option>
             <option value="${base}/features/youtube-downloader.html">YouTube Downloader</option>
             <option value="${base}/features/geo-transform.html">Kalkulator Transformasi Geometri</option>
@@ -81,15 +81,15 @@
     return `
       <div class="footer-inner">
         <div class="footer-left">
-          <strong>Simple Tools</strong> - gatau mau namain apaan.
+          <strong>SerbaKit</strong> - alat sederhana.
         </div>
         <div class="footer-right">
-          <a href="#" aria-label="GitHub">GitHub</a>
+          <a href="https://github.com/Frz013/ByAI-Project" aria-label="GitHub">GitHub</a>
           <span class="dot">•</span>
           <a href="#" aria-label="LinkedIn">LinkedIn</a>
         </div>
       </div>
-      <div class="footer-copy">© ${year} Simple Tools. Dibuat dengan ❤️.</div>
+      <div class="footer-copy">© ${year} SerbaKit. Dibuat dengan ❤️.</div>
     `;
   }
 
@@ -123,10 +123,31 @@
     // Feature select handler
     const featureSelect = document.getElementById("featureSelect");
     if (featureSelect) {
+      // on change: navigate and remember last selection
       featureSelect.addEventListener("change", (e) => {
         const val = e.target.value;
-        if (val) window.location.href = val;
+        if (val && val !== "__none__") {
+          try { localStorage.setItem('lastFeature', val); } catch (err) {}
+          window.location.href = val;
+        }
       });
+
+      // support Enter key to activate selected option (keyboard UX)
+      featureSelect.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = e.target.value;
+          if (val && val !== "__none__") {
+            try { localStorage.setItem('lastFeature', val); } catch (err) {}
+            window.location.href = val;
+          }
+        }
+      });
+
+      // restore last selection if available
+      try {
+        const last = localStorage.getItem('lastFeature');
+        if (last) featureSelect.value = last;
+      } catch (err) {}
 
       // Preselect when on a feature page
       const path = location.pathname.replace(/\\/g, "/");
@@ -148,7 +169,25 @@
     const navLinks = document.querySelector(".nav-links");
     if (navToggle && navLinks) {
       navToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("open");
+        const opened = navLinks.classList.toggle("open");
+        // update aria-expanded
+        navToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        if (opened) {
+          // focus first link for keyboard users
+          const firstLink = navLinks.querySelector('a');
+          if (firstLink) firstLink.focus();
+        }
+      });
+
+      // close nav with Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (navLinks.classList.contains('open')) {
+            navLinks.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.focus();
+          }
+        }
       });
     }
   });
